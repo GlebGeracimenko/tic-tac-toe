@@ -1,0 +1,10 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    url: jdbc:mysql://localhost/tic_tac_toe
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
