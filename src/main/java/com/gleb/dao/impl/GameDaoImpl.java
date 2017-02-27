@@ -5,6 +5,8 @@ import com.gleb.dao.mapper.GameRowMapper;
 import com.gleb.dao.object.DBGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +22,10 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public DBGame save(DBGame dbGame) {
-        jdbcTemplate.update("INSERT INTO games (name, status) VALUE (?,?)", dbGame.getName(), dbGame.getStatus());
+        KeyHolder holder = new GeneratedKeyHolder();
+        jdbcTemplate.update("INSERT INTO games (name, status) VALUE (?,?)", dbGame.getName(), dbGame.getStatus(), holder);
+        Integer id = holder.getKey().intValue();
+        dbGame.setId(id);
         return dbGame;
     }
 

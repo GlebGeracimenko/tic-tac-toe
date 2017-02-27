@@ -1,45 +1,64 @@
+
+<%
+    if (session.isNew()) {
+        session.setAttribute("GameName", "Game1");
+    }
+%>
+
 <html>
 <head>
-    <%--<style type="text/css">--%>
-    <%--TABLE {--%>
-    <%--width: 300px; /* Ширина таблицы */--%>
-    <%--/*border-bottom: 2px solid maroon; !* Линия внизу таблицы *!*/--%>
-    <%--background: #fffacd; /* Цвет фона таблицы */--%>
-    <%--}--%>
-    <%--/*TH {*/--%>
-    <%--/*background: maroon; !* Цвет фона заголовка *!*/--%>
-    <%--/*color: white; !* Цвет текста *!*/--%>
-    <%--/*text-align: left; !* Выравнивание по левому краю *!*/--%>
-    <%--/*}*/--%>
-    <%--/*TD, TH {*/--%>
-    <%--/*padding: 3px; !* Поля вокруг текста *!*/--%>
-    <%--/*}*/--%>
-    <%--</style>--%>
+    <style type="text/css">
+    input[type=button] {
+        border: none;
+        color: black;
+        padding: 40px 55px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    </style>
 </head>
 <body>
 <title>Tic-Tac-Toe</title>
-<%--<form action="" method="post">--%>
-    <table align="center" height="400" width="400" cellspacing="0">
+    <table align="center" height="300" width="300" cellspacing="0">
         <tr>
-            <th>
-                <button formaction="127.0.0.1/" formmethod="post" value="1" type="submit"></button>
-            </th>
-            <th>2</th>
-            <th>3</th>
+            <th><input id="button1" type="button" value="" onclick="step1('1', 'button1')"></th>
+            <th><input id="button2" type="button" value="" onclick="step1('2', 'button2')"></th>
+            <th><input id="button3" type="button" value="" onclick="step1('3', 'button3')"></th>
         </tr>
 
         <tr>
-            <th>4</th>
-            <th>5</th>
-            <th>6</th>
+            <th><input id="button4" type="button" value="" onclick="step1('4', 'button4')"></th>
+            <th><input id="button5" type="button" value="" onclick="step1('5', 'button5')"></th>
+            <th><input id="button6" type="button" value="" onclick="step1('6', 'button6')"></th>
         </tr>
 
         <tr>
-            <th>7</th>
-            <th>8</th>
-            <th>9</th>
+            <th><input id="button7" type="button" value="" onclick="step1('7', 'button7')"></th>
+            <th><input id="button8" type="button" value="" onclick="step1('8', 'button8')"></th>
+            <th><input id="button9" type="button" value="" onclick="step1('9', 'button9')"></th>
         </tr>
     </table>
-<%--</form>--%>
+
+<script language="JavaScript">
+    function step1(intValue, id)
+    {
+        var xhr = new XMLHttpRequest();
+        var body = '{"field":' + encodeURIComponent(intValue)+'}';
+        xhr.open("POST", '/step', false);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.send(body);
+        if (xhr.status == 200) {
+            var response = xhr.responseText;
+            var button = document.getElementById(id);
+            button.value = response;
+            button.disabled = true;
+        } else {
+            alert( xhr.status + ': ' + xhr.statusText );
+        }
+    }
+</script>
 </body>
 </html>

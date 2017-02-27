@@ -1,6 +1,5 @@
 package com.gleb.dao.impl;
 
-import com.gleb.counter.StepCount;
 import com.gleb.dao.StepDao;
 import com.gleb.dao.mapper.StepRowMapper;
 import com.gleb.dao.object.DBStep;
@@ -17,18 +16,14 @@ import java.util.List;
 public class StepDaoImpl implements StepDao {
 
     @Autowired
-    private StepCount stepCount;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Override
     public void save(DBStep dbStep) {
-//        int stepCount = getByGameId(dbStep.getGameId()).size();
-        stepCount.getCount();
+        int count = getCountStep(dbStep.getGameId());
         int k = jdbcTemplate.update("INSERT INTO steps (field, step, game_id) VALUE (?,?,?)", dbStep.getField(),
-                dbStep.getStep(), dbStep.getGameId());
-//        dbStep.setStep();
+                count, dbStep.getGameId());
+        dbStep.setStep(count);
         System.out.println("Save step = " + k);
     }
 
@@ -39,7 +34,12 @@ public class StepDaoImpl implements StepDao {
 
     @Override
     public List<DBStep> getByGameId(Integer id) {
-        List<DBStep> dbSteps = jdbcTemplate.query("SELECT * FROM steps WHERE game_id=", new Object[]{id}, new StepRowMapper());
+        List<DBStep> dbSteps = jdbcTemplate.query("SELECT * FROM steps WHERE game_id=?", new Object[]{id}, new StepRowMapper());
         return dbSteps;
+    }
+
+    private int getCountStep(Integer id) {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM steps WHERE game_id=" + id, Integer.class);
+        return count.intValue();
     }
 }
