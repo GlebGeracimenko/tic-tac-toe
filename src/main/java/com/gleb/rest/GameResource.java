@@ -1,15 +1,15 @@
 package com.gleb.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gleb.dao.GameDao;
-import com.gleb.dao.object.DBGame;
 import com.gleb.rest.object.RSGame;
+import com.gleb.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotNull;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -21,14 +21,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class GameResource {
 
     @Autowired
-    private GameDao gameDao;
+    private GameService gameService;
 
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveGame(@RequestBody RSGame rsGame) {
-        ObjectMapper mapper = new ObjectMapper();
-        DBGame dbGame = mapper.convertValue(rsGame, DBGame.class);
-        DBGame dbGame1 = gameDao.save(dbGame);
-        RSGame response = mapper.convertValue(dbGame1, RSGame.class);
+    public ResponseEntity<?> saveGame(@RequestBody @NotNull RSGame rsGame) {
+        RSGame response = gameService.save(rsGame);
         return ResponseEntity.ok(response);
     }
 

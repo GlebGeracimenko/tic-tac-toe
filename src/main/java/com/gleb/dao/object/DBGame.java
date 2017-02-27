@@ -1,9 +1,11 @@
 package com.gleb.dao.object;
 
+import java.io.Serializable;
+
 /**
  * Created by gleb on 26.02.17.
  */
-public class DBGame {
+public class DBGame implements Serializable {
 
     private Integer id;
 

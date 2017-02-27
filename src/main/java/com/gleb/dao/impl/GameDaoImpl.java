@@ -5,10 +5,14 @@ import com.gleb.dao.mapper.GameRowMapper;
 import com.gleb.dao.object.DBGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -21,9 +25,21 @@ public class GameDaoImpl implements GameDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public DBGame save(DBGame dbGame) {
+    public DBGame save(final DBGame dbGame) {
         KeyHolder holder = new GeneratedKeyHolder();
-        jdbcTemplate.update("INSERT INTO games (name, status) VALUE (?,?)", dbGame.getName(), dbGame.getStatus(), holder);
+//        jdbcTemplate.update("INSERT INTO games (name, status) VALUE (?,?)", dbGame.getName(), dbGame.getStatus(), holder);
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+                PreparedStatement ps = con.prepareStatement("INSERT INTO games (id, name, status) VALUE (DEFAULT,?,?)", new String[]{"id"});
+
+                ps.setString(1, dbGame.getName());
+                ps.setString(2, dbGame.getStatus());
+
+                return ps;
+            }
+        }, holder);
         Integer id = holder.getKey().intValue();
         dbGame.setId(id);
         return dbGame;

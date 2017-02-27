@@ -12,11 +12,24 @@
 </head>
 <body>
 
-<form action="/game" method="POST">
-    Game Name: <input type="text" name="name">
+<%--<form action="/game" method="POST" id="form1">--%>
+    Game Name: <input type="text" id="name" align="middle">
 
-    <input type="submit" value="Start"/>
-</form>
+    <input type="submit" value="Start" align="middle" onclick="start()"/>
+<%--</form>--%>
+<script language="JavaScript">
 
+    function start() {
+        var xhr = new XMLHttpRequest();
+        var name = document.getElementById('name').value;
+        xhr.open("POST", '/game', false);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        var data = JSON.stringify({"name":name});
+
+        xhr.send(data);
+        console.log(xhr.status);
+    }
+
+</script>
 </body>
 </html>
