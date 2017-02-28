@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -30,7 +31,7 @@ public class GameResource {
         return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> getAllGames() {
         List<RSGame> rsGames = gameService.getAllGames();
         return ResponseEntity.ok(new ResponseObject<List>(rsGames));
