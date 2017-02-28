@@ -1,7 +1,7 @@
 package com.gleb.dao.impl;
 
 import com.gleb.dao.GameDao;
-import com.gleb.dao.mapper.GameRowMapper;
+import com.gleb.dao.rowMapper.GameRowMapper;
 import com.gleb.dao.object.DBGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -53,7 +53,12 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public List<DBGame> getById(Integer id) {
-        List<DBGame> dbSteps = jdbcTemplate.query("SELECT * FROM steps WHERE game_id=", new Object[]{id}, new GameRowMapper());
+        List<DBGame> dbSteps = jdbcTemplate.query("SELECT * FROM games WHERE game_id=", new Object[]{id}, new GameRowMapper());
         return dbSteps;
+    }
+
+    @Override
+    public List<DBGame> getAll() {
+        return jdbcTemplate.query("SELECT * FROM games", new GameRowMapper());
     }
 }

@@ -1,22 +1,35 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ggerasim
-  Date: 2/27/17
-  Time: 4:40 PM
-  To change this template use File | Settings | File Templates.
---%>
+<style>
+    form {
+        /*display: inline-block;*/
+        text-align: center;
+        align-content: center;
+        align-items: center;
+    }
+</style>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Tic Tac Toe</title>
 </head>
 <body>
+<form>
+    <h1 align="center">Welcome to tic-tac-toe</h1>
 
-<%--<form action="/game" method="POST" id="form1">--%>
-    Game Name: <input type="text" id="name" align="middle">
+    Game Name: <input align="center" type="text" id="name">
 
-    <input type="submit" value="Start" align="middle" onclick="start()"/>
-<%--</form>--%>
+    <input align="center" type="submit" value="Start" onclick="start()"/>
+    OR
+    <input align="center" type="submit" value="Load" onclick="load()"/>
+    <script language="JavaScript">
+        function load() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", '/game', false);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send();
+            var response = xhr.responseText;
+        }
+    </script>
+</form>
 <script language="JavaScript">
 
     function start() {
@@ -24,10 +37,16 @@
         var name = document.getElementById('name').value;
         xhr.open("POST", '/game', false);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        var data = JSON.stringify({"name":name});
+        var data = JSON.stringify({"name": name});
 
         xhr.send(data);
         console.log(xhr.status);
+        if (xhr.status == 200) {
+            var response = xhr.responseText;
+            var json = JSON.parse(response);
+            var gameId = json.id;
+            window.location.href = '/ticTacToe?gameId=' + gameId;
+        }
     }
 
 </script>

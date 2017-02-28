@@ -9,6 +9,10 @@ import java.util.List;
  */
 public interface GameDao {
     DBGame save(DBGame dbGame);
+
     DBGame update(DBGame dbGame);
+
     List<DBGame> getById(Integer id);
+
+    List<DBGame> getAll();
 }

@@ -1,4 +1,4 @@
-package com.gleb.dao.mapper;
+package com.gleb.dao.rowMapper;
 
 import com.gleb.dao.object.DBStep;
 import org.springframework.jdbc.core.RowMapper;

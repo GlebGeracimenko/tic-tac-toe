@@ -8,6 +8,8 @@ import com.gleb.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.gleb.dao.object.Status.IN_PRODRESS;
 
 /**
@@ -30,5 +32,11 @@ public class GameServiceImpl implements GameService {
         }
         gameDao.save(game);
         return mapper.map(game);
+    }
+
+    @Override
+    public List<RSGame> getAllGames() {
+        List<DBGame> dbGames = gameDao.getAll();
+        return mapper.map(dbGames);
     }
 }

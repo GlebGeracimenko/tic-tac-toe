@@ -14,6 +14,8 @@ public class RSStep {
 
     private Integer gameId;
 
+    private String value;
+
     public Integer getStep() {
         return step;
     }
@@ -36,5 +38,23 @@ public class RSStep {
 
     public void setGameId(Integer gameId) {
         this.gameId = gameId;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"step\":" + step +
+                ", \"field\":" + field +
+                ", \"gameId\":" + gameId +
+                ", \"value\":'" + value + '\'' +
+                '}';
     }
 }

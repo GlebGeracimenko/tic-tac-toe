@@ -37,4 +37,13 @@ public class RSGame {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":" + id +
+                ", \"name\":'" + name + '\'' +
+                ", \"status\":'" + status + '\'' +
+                '}';
+    }
 }

@@ -1,7 +1,7 @@
 package com.gleb.dao.impl;
 
 import com.gleb.dao.StepDao;
-import com.gleb.dao.mapper.StepRowMapper;
+import com.gleb.dao.rowMapper.StepRowMapper;
 import com.gleb.dao.object.DBStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
@@ -21,10 +21,10 @@ public class StepDaoImpl implements StepDao {
     @Override
     public void save(DBStep dbStep) {
         int count = getCountStep(dbStep.getGameId());
-        int k = jdbcTemplate.update("INSERT INTO steps (field, step, game_id) VALUE (?,?,?)", dbStep.getField(),
+        count++;
+        jdbcTemplate.update("INSERT INTO steps (field, step, game_id) VALUE (?,?,?)", dbStep.getField(),
                 count, dbStep.getGameId());
         dbStep.setStep(count);
-        System.out.println("Save step = " + k);
     }
 
     @Override
