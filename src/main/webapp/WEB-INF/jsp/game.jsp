@@ -45,7 +45,7 @@
         document.open();
         for (var i = 0; i < array.length; i++) {
             var game = array[i];
-            document.writeln("<li>Game: "+ game.name + ", status: "+ game.status +"</li>");
+            document.writeln("<li>Game: "+ game.name + ", status: "+ game.status +"   <button type='submit' onclick='redirect("+game.id+")'>  Open</button></li>");
         }
         document.close();
     </script>
@@ -66,9 +66,13 @@
             var json = JSON.parse(response);
             var gameId = json.id;
             alert("before redirect..");
-            window.location.href = '/ticTacToe?gameId=' + gameId;
+            redirect(gameId);
             return false;
         }
+    }
+
+    function redirect(gameId) {
+        window.location.href = '/ticTacToe?gameId=' + gameId;
     }
 
 </script>

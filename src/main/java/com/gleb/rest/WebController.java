@@ -1,6 +1,7 @@
 package com.gleb.rest;
 
 import com.gleb.rest.object.RSStep;
+import com.gleb.service.GameService;
 import com.gleb.service.StepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ import java.util.Map;
 public class WebController {
 
     @Autowired
+    private GameService gameService;
+
+    @Autowired
     private StepService stepService;
 
     @GetMapping("/")
@@ -30,6 +34,7 @@ public class WebController {
     public String ticTacToe(@RequestParam("gameId") @NotNull Integer id, Map<String, Object> model) {
         List<RSStep> rsSteps = stepService.getByGameId(id);
         model.put("id", id);
+        model.put("status", gameService.getStatusById(id));
         model.put("steps", Arrays.toString(rsSteps.toArray(new RSStep[]{})));
         return "ticTacToe";
     }

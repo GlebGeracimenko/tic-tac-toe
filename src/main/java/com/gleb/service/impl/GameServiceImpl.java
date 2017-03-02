@@ -35,6 +35,19 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public RSGame update(RSGame rsGame) {
+        DBGame game = mapper.map(rsGame);
+        gameDao.update(game);
+        return mapper.map(game);
+    }
+
+    @Override
+    public String getStatusById(Integer id) {
+        String status = gameDao.getStatusById(id);
+        return status;
+    }
+
+    @Override
     public List<RSGame> getAllGames() {
         List<DBGame> dbGames = gameDao.getAll();
         return mapper.map(dbGames);

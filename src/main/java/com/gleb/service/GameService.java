@@ -9,5 +9,7 @@ import java.util.List;
  */
 public interface GameService {
     RSGame save(RSGame rsGame);
+    RSGame update(RSGame rsGame);
+    String getStatusById(Integer id);
     List<RSGame> getAllGames();
 }

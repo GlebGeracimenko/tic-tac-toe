@@ -31,6 +31,12 @@ public class GameResource {
         return ResponseEntity.ok(response);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateGame(@RequestBody @NotNull RSGame rsGame) {
+        RSGame response = gameService.update(rsGame);
+        return ResponseEntity.ok(response);
+    }
+
     @RequestMapping(method = RequestMethod.GET, produces = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> getAllGames() {
         List<RSGame> rsGames = gameService.getAllGames();

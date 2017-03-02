@@ -12,7 +12,9 @@ public interface GameDao {
 
     DBGame update(DBGame dbGame);
 
-    List<DBGame> getById(Integer id);
+    DBGame getById(Integer id);
+
+    String getStatusById(Integer id);
 
     List<DBGame> getAll();
 }

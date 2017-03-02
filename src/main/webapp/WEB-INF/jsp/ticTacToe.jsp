@@ -22,7 +22,9 @@
 <body>
 
 <title>Tic-Tac-Toe</title>
+<button type="submit" style="height: 70px; width:  150px; font-size: medium; background-color: deepskyblue" onclick="window.location.href = '/'">Back</button>
     <table align="center" height="300" width="300" cellspacing="0">
+
         <tr>
             <th><input id="button1" type="button" value="" onclick="step1('1', 'button1')"></th>
             <th><input id="button2" type="button" value="" onclick="step1('2', 'button2')"></th>
@@ -41,12 +43,11 @@
             <th><input id="button9" type="button" value="" onclick="step1('9', 'button9')"></th>
         </tr>
     </table>
-
+Game status: ${status}
 <form id="form1">
 
     <%--<center></center>--%>
 <script async type="text/javascript">
-    var count = 1;
     function writeStep(value)
     {
         var el = document.getElementById("form1");
@@ -72,6 +73,10 @@
         writeStep(json);
     }
 
+    if ('${status}' != 'In progress') {
+        allDisabled();
+    }
+
     function step1(intValue, id)
     {
         console.log('Game id = ' + ${id});
@@ -88,9 +93,35 @@
             button.value = json.value;
             button.disabled = true;
             writeStep(json);
+
+            if (json.status != null) {
+                checkResult(json.status);
+            }
+
         } else {
             alert( xhr.status + ': ' + xhr.statusText);
         }
+    }
+
+    function allDisabled() {
+        var array = document.getElementsByTagName("input");
+        for (var i = 0; i < array.length; i++) {
+            var but = array[i];
+            if (but.disabled == false) {
+                but.disabled = true;
+            }
+        }
+    }
+
+    function checkResult(status)
+    {
+        var xhr = new XMLHttpRequest();
+        var body = '{"id":' + ${id} + ',"status":"'+status+'"}';
+        xhr.open("PUT", '/game', false);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(body);
+        allDisabled();
+        alert('Game is over! Result ' + status);
     }
 </script>
 </body>

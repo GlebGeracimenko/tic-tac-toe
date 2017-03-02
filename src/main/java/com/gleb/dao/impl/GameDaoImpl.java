@@ -6,6 +6,7 @@ import com.gleb.dao.object.DBGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -47,14 +48,32 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public DBGame update(DBGame dbGame) {
-        jdbcTemplate.update("UPDATE games SET name=?, status=? WHERE id=?", dbGame.getName(), dbGame.getStatus(), dbGame.getId());
-        return dbGame;
+        if (dbGame == null || dbGame.getId() == null) {
+            return null;
+        }
+        if (dbGame.getName() == null) {
+            jdbcTemplate.update("UPDATE games SET  status=? WHERE id=?", dbGame.getStatus(), dbGame.getId());
+        } else if (dbGame.getStatus() == null) {
+            jdbcTemplate.update("UPDATE games SET name=? WHERE id=?", dbGame.getName(), dbGame.getId());
+        } else {
+            jdbcTemplate.update("UPDATE games SET name=?, status=? WHERE id=?", dbGame.getName(), dbGame.getStatus(), dbGame.getId());
+        }
+        return getById(dbGame.getId());
     }
 
     @Override
-    public List<DBGame> getById(Integer id) {
-        List<DBGame> dbSteps = jdbcTemplate.query("SELECT * FROM games WHERE game_id=", new Object[]{id}, new GameRowMapper());
-        return dbSteps;
+    public DBGame getById(Integer id) {
+        List<DBGame> dbSteps = jdbcTemplate.query("SELECT * FROM games WHERE id=?", new Object[]{id}, new GameRowMapper());
+        if (dbSteps.isEmpty()) {
+            return null;
+        }
+        return dbSteps.get(0);
+    }
+
+    @Override
+    public String getStatusById(Integer id) {
+        String status = jdbcTemplate.queryForObject("SELECT status FROM games WHERE id=?", new Object[]{id}, String.class);
+        return status;
     }
 
     @Override
