@@ -17,13 +17,18 @@
         display: inline-block;
         font-size: 16px;
     }
+
     </style>
 </head>
 <body>
 
 <title>Tic-Tac-Toe</title>
-<button type="submit" style="height: 70px; width:  150px; font-size: medium; background-color: deepskyblue" onclick="window.location.href = '/'">Back</button>
+
     <table align="center" height="300" width="300" cellspacing="0">
+
+        <div>
+            <button type="submit" style="height: 70px; width:  150px; font-size: medium; background-color: deepskyblue" onclick="window.location.href = '/'">Back</button>
+        </div>
 
         <tr>
             <th><input id="button1" type="button" value="" onclick="step1('1', 'button1')"></th>
@@ -43,7 +48,7 @@
             <th><input id="button9" type="button" value="" onclick="step1('9', 'button9')"></th>
         </tr>
     </table>
-Game status: ${status}
+<h1 id="statusH1">Game status: ${status}</h1>
 <form id="form1">
 
     <%--<center></center>--%>
@@ -79,7 +84,7 @@ Game status: ${status}
 
     function step1(intValue, id)
     {
-        console.log('Game id = ' + ${id});
+        <%--console.log('Game id = ' + ${id});--%>
         var xhr = new XMLHttpRequest();
         var body = '{"field":' + encodeURIComponent(intValue)+', "gameId":' + ${id} + '}';
         xhr.open("POST", '/step', false);
@@ -120,6 +125,8 @@ Game status: ${status}
         xhr.open("PUT", '/game', false);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(body);
+        var h1 = document.getElementById("statusH1");
+        h1.innerHTML = "Game status: "+status;
         allDisabled();
         alert('Game is over! Result ' + status);
     }

@@ -18,6 +18,9 @@
     li {
         padding-right: 50px;
     }
+    button {
+        float: right;
+    }
 </style>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -45,7 +48,7 @@
         document.open();
         for (var i = 0; i < array.length; i++) {
             var game = array[i];
-            document.writeln("<li>Game: "+ game.name + ", status: "+ game.status +"   <button type='submit' onclick='redirect("+game.id+")'>  Open</button></li>");
+            document.writeln("<li>Game: "+ game.name + ", status: "+ game.status +"&nbsp;<button type='submit' onclick='redirect("+game.id+")'>Open</button></li>");
         }
         document.close();
     </script>
@@ -60,7 +63,7 @@
         var data = JSON.stringify({"name": name});
 
         xhr.send(data);
-        console.log(xhr.status);
+//        console.log(xhr.status);
         if (xhr.status == 200) {
             var response = xhr.responseText;
             var json = JSON.parse(response);
